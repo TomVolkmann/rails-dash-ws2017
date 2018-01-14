@@ -4,12 +4,14 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.all
+    orders = Order.all.includes(:customer)
+    @orderInfo = orders.map { |otto| [otto, otto.customer.name]}
   end
 
   # GET /orders/1
   # GET /orders/1.json
   def show
+    @name = @order.customer.name
     line_items = @order.line_items.includes(:pumpkin)
     @li_pumpkin_pairs = line_items.map { |li| [li, li.pumpkin] }
   end
